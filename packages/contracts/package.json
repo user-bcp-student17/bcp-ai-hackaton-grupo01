@@ -3,6 +3,10 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./onboarding": {
+      "types": "./src/onboarding.ts",
+      "import": "./dist/onboarding.js"
+    },
     ".": {
       "types": "./src/common.ts",
       "import": "./dist/common.js"

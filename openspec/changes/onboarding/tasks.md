@@ -2,9 +2,9 @@
 
 ## 1. Persist registration identity and wallet affiliation
 <!-- issue: area=backend size=M priority=p0 agent=auto depends=scaffold:2 files=api/src/features/onboarding/domain/,api/src/features/onboarding/application/,api/src/features/onboarding/adapters/persistence/,api/db/migrations/001-onboarding.sql,packages/contracts/src/onboarding.ts -->
-- [ ] 1.1 Implement shared input/UserView/WalletView schemas and user lookup/verification ports per Contracts; verify DNI/CE/phone/email/password cases with schema tests.
-- [ ] 1.2 Add salted scrypt, 001 migration and transactional user-wallet-opening persistence; verify unique constraints and initial balance granted once.
-- [ ] 1.3 Test registration data through repository/use-case public surfaces with real temporary SQLite: active/inactive affiliation, uniqueness, rollback, restart, hash secrecy and repeated opening allocation without refilling a changed balance.
+- [x] 1.1 Implement shared input/UserView/WalletView schemas and user lookup/verification ports per Contracts; verify DNI/CE/phone/email/password cases with schema tests.
+- [x] 1.2 Add salted scrypt, 001 migration and transactional user-wallet-opening persistence; verify unique constraints and initial balance granted once.
+- [x] 1.3 Test registration data through repository/use-case public surfaces with real temporary SQLite: active/inactive affiliation, uniqueness, rollback, restart, hash secrecy and repeated opening allocation without refilling a changed balance.
 
 ## 2. Expose registration and deterministic KYC routes
 <!-- issue: area=backend size=M priority=p0 agent=auto depends=scaffold:2,1 files=api/src/features/onboarding/adapters/http/,api/src/features/onboarding/adapters/kyc/,api/src/app.ts -->
