@@ -5,10 +5,6 @@ import { afterEach, beforeEach, expect, test } from "vitest";
 import type { FastifyInstance } from "fastify";
 import { errorResponseSchema } from "@wallet/contracts";
 import { sessionResponseSchema } from "@wallet/contracts/auth";
-import {
-  createPaymentResponseSchema,
-  paymentResponseSchema,
-} from "@wallet/contracts/payments";
 import { registrationInputSchema } from "@wallet/contracts/onboarding";
 import { buildApp } from "../../../../app.js";
 import { loadConfig } from "../../../../shared/config.js";
@@ -27,6 +23,10 @@ import {
   type TransferCommand,
   type TransferOutcome,
 } from "../../application/ports.js";
+import {
+  createPaymentResponseSchema,
+  paymentResponseSchema,
+} from "./schemas.js";
 
 const PASSWORD = "012345";
 const KEY = "pay-key_001";

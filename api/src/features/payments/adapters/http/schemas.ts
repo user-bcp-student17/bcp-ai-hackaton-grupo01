@@ -1,6 +1,7 @@
+import { walletViewSchema } from "@wallet/contracts/onboarding";
 import { z } from "zod";
-import { walletViewSchema } from "./onboarding.js";
 
+// Local copy of the payments Contracts: payments:1 owns the shared schema file, and this group must not edit it.
 const MAX_STORAGE_CENTS = 100_000_000;
 const MAX_KEY_LENGTH = 100;
 
@@ -47,7 +48,3 @@ export const createPaymentResponseSchema = z.strictObject({
   payment: paymentViewSchema,
   wallet: walletViewSchema,
 });
-
-export type PaymentInput = z.infer<typeof paymentInputSchema>;
-export type PaymentView = z.infer<typeof paymentViewSchema>;
-export type CreatePaymentResponse = z.infer<typeof createPaymentResponseSchema>;

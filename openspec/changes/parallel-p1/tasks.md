@@ -8,9 +8,9 @@
 
 ## 2. Expose transfer and recovery routes
 <!-- issue: area=backend size=S priority=p1 agent=auto files=api/src/features/payments/adapters/http/,api/src/app.ts -->
-- [ ] 2.1 Register POST /payments, GET /payments/by-key/:key before GET /payments/:id under /api/v1 over a fake payment port; verify bearer/active guards and strict schemas.
-- [ ] 2.2 Map replay 200/new 201 and safe 400/404/409/503; omit raw retry keys from logs; no success on storage failure.
-- [ ] 2.3 Test inject status/body for new/replay/conflict, bad key, unauthorized/inactive/third-party and storage failure.
+- [x] 2.1 Register POST /payments, GET /payments/by-key/:key before GET /payments/:id under /api/v1 over a fake payment port; verify bearer/active guards and strict schemas.
+- [x] 2.2 Map replay 200/new 201 and safe 400/404/409/503; omit raw retry keys from logs; no success on storage failure.
+- [x] 2.3 Test inject status/body for new/replay/conflict, bad key, unauthorized/inactive/third-party and storage failure.
 
 ## 3. Expose participant receipt and history queries
 <!-- issue: area=backend size=S priority=p1 agent=auto files=api/src/features/receipt-history/,api/src/app.ts -->

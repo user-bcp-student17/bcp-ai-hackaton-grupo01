@@ -14,9 +14,9 @@
 
 ## 3. Expose transfer and recovery routes
 <!-- issue: area=backend size=S priority=p1 agent=auto depends=scaffold:2,2 files=api/src/features/payments/adapters/http/,api/src/app.ts -->
-- [x] 3.1 Register POST /payments, GET /payments/by-key/:key before GET /payments/:id under /api/v1; verify auth/active ownership and strict schemas.
-- [x] 3.2 Map replay 200/new 201, safe 400/404/409/503 and omit raw retry-key URLs from logs; verify no misleading success response on storage failure.
-- [x] 3.3 Test inject status/body for new/replay/conflict, bad key, unauthorized/inactive/third-party, same-key recovery and safe storage failure.
+- [ ] 3.1 Register POST /payments, GET /payments/by-key/:key before GET /payments/:id under /api/v1; verify auth/active ownership and strict schemas.
+- [ ] 3.2 Map replay 200/new 201, safe 400/404/409/503 and omit raw retry-key URLs from logs; verify no misleading success response on storage failure.
+- [ ] 3.3 Test inject status/body for new/replay/conflict, bad key, unauthorized/inactive/third-party, same-key recovery and safe storage failure.
 
 ## 4. Build confirmation and uncertainty-safe payment interface
 <!-- issue: area=frontend size=M priority=p1 depends=scaffold:2,1,3,contacts:2 files=web/src/features/payments/,web/src/App.tsx,tests/e2e/contact-payment.test.ts -->

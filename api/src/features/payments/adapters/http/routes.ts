@@ -1,12 +1,4 @@
 import { errorResponseSchema, type ErrorResponse } from "@wallet/contracts";
-import {
-  createPaymentResponseSchema,
-  paymentHeadersSchema,
-  paymentIdParamsSchema,
-  paymentInputSchema,
-  paymentKeyParamsSchema,
-  paymentResponseSchema,
-} from "@wallet/contracts/payments";
 import type {
   FastifyPluginCallback,
   FastifyReply,
@@ -18,6 +10,14 @@ import {
   type PaymentErrorCode,
   type PaymentPort,
 } from "../../application/ports.js";
+import {
+  createPaymentResponseSchema,
+  paymentHeadersSchema,
+  paymentIdParamsSchema,
+  paymentInputSchema,
+  paymentKeyParamsSchema,
+  paymentResponseSchema,
+} from "./schemas.js";
 
 export type PaymentRoutesOptions = {
   payments: PaymentPort;
