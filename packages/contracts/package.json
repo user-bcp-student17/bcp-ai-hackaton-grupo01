@@ -7,6 +7,10 @@
       "types": "./src/onboarding.ts",
       "import": "./dist/onboarding.js"
     },
+    "./auth": {
+      "types": "./src/auth.ts",
+      "import": "./dist/auth.js"
+    },
     ".": {
       "types": "./src/common.ts",
       "import": "./dist/common.js"

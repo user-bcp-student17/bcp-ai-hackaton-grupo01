@@ -2,9 +2,9 @@
 
 ## 1. Implement hashed session persistence and credential verification
 <!-- issue: area=backend size=M priority=p0 agent=auto depends=scaffold:2,onboarding:1 files=api/src/features/auth/application/,api/src/features/auth/adapters/persistence/,api/db/migrations/002-auth.sql,packages/contracts/src/auth.ts -->
-- [ ] 1.1 Implement session schemas/use cases and 002 migration using onboarding lookup/verification ports; verify random opaque tokens are hashed in storage.
-- [ ] 1.2 Implement one-hour expiry/revocation, generic credential failures and rate-limit key policy; verify clock-controlled expiry and unknown-user dummy verification.
-- [ ] 1.3 Test real SQLite sessions across restart, incorrect/unknown credentials, non-active login, revoke and no second wallet funding.
+- [x] 1.1 Implement session schemas/use cases and 002 migration using onboarding lookup/verification ports; verify random opaque tokens are hashed in storage.
+- [x] 1.2 Implement one-hour expiry/revocation, generic credential failures and rate-limit key policy; verify clock-controlled expiry and unknown-user dummy verification.
+- [x] 1.3 Test real SQLite sessions across restart, incorrect/unknown credentials, non-active login, revoke and no second wallet funding.
 
 ## 2. Expose login, logout and owner-only account routes
 <!-- issue: area=backend size=M priority=p0 agent=auto depends=scaffold:2,1,onboarding:2 files=api/src/features/auth/adapters/http/,api/src/shared/auth.ts,api/src/app.ts -->
