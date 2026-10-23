@@ -25,6 +25,9 @@ import { loginUser } from "./features/auth/application/login-user.js";
 import { resolveSession } from "./features/auth/application/resolve-session.js";
 import { Unauthenticated } from "./features/auth/domain/session.js";
 import { revokeSession } from "./features/auth/application/revoke-session.js";
+import { paymentRoutes } from "./features/payments/adapters/http/routes.js";
+import { UnavailablePayments } from "./features/payments/adapters/unavailable/unavailable-payments.js";
+import type { PaymentPort } from "./features/payments/application/ports.js";
 import { receiptHistoryRoutes } from "./features/receipt-history/adapters/http/routes.js";
 import { SqlitePaymentQueries } from "./features/receipt-history/adapters/persistence/sqlite-payment-queries.js";
 import { getPaymentReceipt, listPaymentHistory } from "./features/receipt-history/application/payment-history.js";
@@ -43,6 +46,7 @@ export async function buildApp(deps: {
   database?: DatabaseSync;
   logger?: FastifyServerOptions["logger"];
   webDirectory?: string;
+  payments?: PaymentPort;
 }): Promise<FastifyInstance> {
   const database =
     deps.database ??
@@ -148,6 +152,7 @@ export async function buildApp(deps: {
   const passwords = new ScryptPasswords();
   // Unknown documents are verified against this hash so both login failures take the same time.
   const dummyPasswordHash = await passwords.hash(randomBytes(32).toString("hex"));
+  const resolve = resolveSession({ users, sessions, now: clock });
   await app.register(authRoutes, {
     login: loginUser({
       users,
@@ -160,7 +165,7 @@ export async function buildApp(deps: {
       sessionTtlSeconds: deps.config.SESSION_TTL_SECONDS,
     }),
     revoke: revokeSession({ sessions, now: clock }),
-    resolve: resolveSession({ users, sessions, now: clock }),
+    resolve,
     account: getAccount({ users }),
     throttle: new LoginThrottle({
       maxAttempts: deps.config.AUTH_RATE_LIMIT_MAX,
@@ -183,6 +188,18 @@ export async function buildApp(deps: {
     },
     history: listPaymentHistory(payments),
     receipt: getPaymentReceipt(payments),
+  });
+  await app.register(paymentRoutes, {
+    // Until the SQLite payment adapter is wired, every payment call fails closed with 503.
+    payments: deps.payments ?? new UnavailablePayments(),
+    resolveOwner: (token) => {
+      try {
+        return resolve(token);
+      } catch (error) {
+        if (error instanceof Unauthenticated) return null;
+        throw error;
+      }
+    },
   });
   return app;
 }

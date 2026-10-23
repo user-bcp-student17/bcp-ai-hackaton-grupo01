@@ -50,3 +50,50 @@ export interface PaymentLedger {
   findPaymentByRetryKey(sourceUserId: string, key: string): PaymentRecord | null;
   findPaymentForParticipant(paymentId: string, userId: string): PaymentRecord | null;
 }
+
+export type WalletBalance = {
+  id: string;
+  currency: "PEN";
+  balanceCents: number;
+};
+
+export type TransferCommand = {
+  sourceUserId: string;
+  idempotencyKey: string;
+  recipientWalletId: string;
+  amountCents: number;
+};
+
+export type TransferOutcome = {
+  outcome: "created" | "replayed";
+  payment: PaymentRecord;
+  wallet: WalletBalance;
+};
+
+export const paymentErrorCodes = [
+  "VALIDATION_ERROR",
+  "RECIPIENT_NOT_FOUND",
+  "SELF_TRANSFER",
+  "CONTACT_REQUIRED",
+  "INSUFFICIENT_FUNDS",
+  "BALANCE_LIMIT_EXCEEDED",
+  "IDEMPOTENCY_CONFLICT",
+  "PAYMENT_NOT_FOUND",
+  "STORAGE_UNAVAILABLE",
+] as const;
+
+export type PaymentErrorCode = (typeof paymentErrorCodes)[number];
+
+// Business and storage failures leave the code to the HTTP adapter, which owns the status.
+export class PaymentError extends Error {
+  constructor(readonly code: PaymentErrorCode) {
+    super(code);
+  }
+}
+
+// The use case owns the transaction. Routes only call these methods.
+export interface PaymentPort {
+  transfer(command: TransferCommand): TransferOutcome;
+  findByKey(sourceUserId: string, idempotencyKey: string): PaymentRecord | null;
+  findForParticipant(viewerUserId: string, paymentId: string): PaymentRecord | null;
+}

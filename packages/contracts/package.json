@@ -11,6 +11,10 @@
       "types": "./src/auth.ts",
       "import": "./dist/auth.js"
     },
+    "./payments": {
+      "types": "./src/payments.ts",
+      "import": "./dist/payments.js"
+    },
     ".": {
       "types": "./src/common.ts",
       "import": "./dist/common.js"
