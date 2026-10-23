@@ -14,9 +14,16 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
-import { randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import type { DatabaseSync } from "node:sqlite";
 import { z } from "zod";
+import { authRoutes } from "./features/auth/adapters/http/routes.js";
+import { SqliteSessions } from "./features/auth/adapters/persistence/sqlite-sessions.js";
+import { LoginThrottle } from "./features/auth/application/login-throttle.js";
+import { getAccount } from "./features/auth/application/get-account.js";
+import { loginUser } from "./features/auth/application/login-user.js";
+import { resolveSession } from "./features/auth/application/resolve-session.js";
+import { revokeSession } from "./features/auth/application/revoke-session.js";
 import { onboardingRoutes } from "./features/onboarding/adapters/http/routes.js";
 import { LocalKyc } from "./features/onboarding/adapters/kyc/local-kyc.js";
 import { ScryptPasswords } from "./features/onboarding/adapters/persistence/scrypt-passwords.js";
@@ -130,6 +137,34 @@ export async function buildApp(deps: {
       max: deps.config.AUTH_RATE_LIMIT_MAX,
       windowMs: deps.config.AUTH_RATE_LIMIT_WINDOW_SECONDS * 1000,
     },
+  });
+  const clock = () => new Date();
+  const users = new SqliteUsers(database);
+  const sessions = new SqliteSessions(database);
+  const passwords = new ScryptPasswords();
+  // Unknown documents are verified against this hash so both login failures take the same time.
+  const dummyPasswordHash = await passwords.hash(randomBytes(32).toString("hex"));
+  await app.register(authRoutes, {
+    login: loginUser({
+      users,
+      passwords,
+      sessions,
+      dummyPasswordHash,
+      now: clock,
+      newId: randomUUID,
+      newToken: () => randomBytes(32).toString("base64url"),
+      sessionTtlSeconds: deps.config.SESSION_TTL_SECONDS,
+    }),
+    revoke: revokeSession({ sessions, now: clock }),
+    resolve: resolveSession({ users, sessions, now: clock }),
+    account: getAccount({ users }),
+    throttle: new LoginThrottle({
+      maxAttempts: deps.config.AUTH_RATE_LIMIT_MAX,
+      windowSeconds: deps.config.AUTH_RATE_LIMIT_WINDOW_SECONDS,
+      now: () => Date.now(),
+    }),
+    // Per-process secret: the rate-limit store never holds raw document numbers.
+    documentSecret: randomBytes(32),
   });
   return app;
 }

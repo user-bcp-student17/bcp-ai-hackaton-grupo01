@@ -3,6 +3,7 @@ import {
   documentTypeSchema,
   passwordSchema,
   userViewSchema,
+  walletViewSchema,
 } from "./onboarding.js";
 
 const validDocument = (value: {
@@ -30,5 +31,11 @@ export const sessionResponseSchema = z.strictObject({
   user: userViewSchema,
 });
 
+export const accountResponseSchema = z.strictObject({
+  user: userViewSchema,
+  wallet: walletViewSchema.nullable(),
+});
+
 export type LoginInput = z.infer<typeof loginInputSchema>;
 export type SessionResponse = z.infer<typeof sessionResponseSchema>;
+export type AccountResponse = z.infer<typeof accountResponseSchema>;

@@ -8,9 +8,9 @@
 
 ## 2. Expose login, logout and owner-only account routes
 <!-- issue: area=backend size=M priority=p0 agent=auto depends=scaffold:2,1,onboarding:2 files=api/src/features/auth/adapters/http/,api/src/shared/auth.ts,api/src/app.ts -->
-- [ ] 2.1 Wire POST /sessions, DELETE /sessions/current and GET /me under /api/v1 with response/error schemas; verify bearer middleware derives owner exclusively.
-- [ ] 2.2 Apply login rate limits and safe logs; verify missing/expired/revoked tokens fail and pending/rejected users get own status with wallet=null.
-- [ ] 2.3 Test all routes with inject: valid/invalid/malformed login, 429/Retry-After, two-user ownership, inactive results and logout invalidating old token.
+- [x] 2.1 Wire POST /sessions, DELETE /sessions/current and GET /me under /api/v1 with response/error schemas; verify bearer middleware derives owner exclusively.
+- [x] 2.2 Apply login rate limits and safe logs; verify missing/expired/revoked tokens fail and pending/rejected users get own status with wallet=null.
+- [x] 2.3 Test all routes with inject: valid/invalid/malformed login, 429/Retry-After, two-user ownership, inactive results and logout invalidating old token.
 
 ## 3. Deliver login and wallet views with the reduced p0 journey
 <!-- issue: area=frontend size=M priority=p0 depends=scaffold:2,1,2,onboarding:3 files=web/src/features/auth/,web/src/lib/session.tsx,web/src/App.tsx,tests/e2e/onboarding.test.ts -->
