@@ -2,9 +2,9 @@
 
 ## 1. Define contact-payment rules and exact shared schemas
 <!-- issue: area=backend size=S priority=p1 agent=auto depends=scaffold:2,contacts:1 files=api/src/features/payments/domain/,api/src/features/payments/application/ports.ts,packages/contracts/src/payments.ts -->
-- [ ] 1.1 Implement immutable PaymentView/request schemas and domain amount/recipient/fingerprint rules; verify all errors follow reviewed Contracts.
-- [ ] 1.2 Define transaction/query ports without framework or adapter dependencies; verify interface permits atomic debit-credit-payment-key commit.
-- [ ] 1.3 Test positive/cap/fractional/zero amounts, same canonical payload fingerprint and changed-payload conflict deterministically.
+- [x] 1.1 Implement immutable PaymentView/request schemas and domain amount/recipient/fingerprint rules; verify all errors follow reviewed Contracts.
+- [x] 1.2 Define transaction/query ports without framework or adapter dependencies; verify interface permits atomic debit-credit-payment-key commit.
+- [x] 1.3 Test positive/cap/fractional/zero amounts, same canonical payload fingerprint and changed-payload conflict deterministically.
 
 ## 2. Implement atomic SQLite payment and persistent retry identity
 <!-- issue: area=backend size=M priority=p1 depends=scaffold:2,1 files=api/src/features/payments/application/transfer.ts,api/src/features/payments/adapters/persistence/,api/db/migrations/004-payments.sql -->
